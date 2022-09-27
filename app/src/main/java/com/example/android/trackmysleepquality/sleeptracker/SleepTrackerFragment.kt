@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -70,7 +71,12 @@ class SleepTrackerFragment : Fragment() {
          * Bind Adapter - SleepNightAdapter()
          */
         // We are informing RecyclerView to use our custom Adapter, so it can get ViewHolders
-        val adapter = SleepNightAdapter()
+        // val adapter = SleepNightAdapter()
+
+        val adapter = SleepNightAdapter(SleepNightListener { nightId ->
+            Toast.makeText(context, "$nightId", Toast.LENGTH_LONG).show()
+        })
+
 
         // We are now assigning Adapter to the RecyclerView
         // It will be used to display things on the screen

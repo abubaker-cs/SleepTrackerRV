@@ -25,7 +25,7 @@ import com.example.android.trackmysleepquality.database.SleepNight
 import com.example.android.trackmysleepquality.databinding.ListItemSleepNightBinding
 
 // class SleepNightAdapter : RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {
-class SleepNightAdapter :
+class SleepNightAdapter(private val clickListener: SleepNightListener) :
     ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(SleepNightDiffCallback()) {
 
     // We are defining the DATA SOURCE
@@ -43,8 +43,8 @@ class SleepNightAdapter :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // val item = data[position]
-        val item = getItem(position)
-        holder.bind(item)
+        val item = getItem(position)!!
+        holder.bind(item, clickListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -54,10 +54,15 @@ class SleepNightAdapter :
     class ViewHolder private constructor(val binding: ListItemSleepNightBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: SleepNight) {
+        fun bind(item: SleepNight, clickListener: SleepNightListener) {
 
             binding.sleep = item
+
+            // Execute clickListener function
+            binding.clickListener = clickListener
+
             binding.executePendingBindings()
+
 
 //            val res = itemView.context.resources
 //            binding.sleepLength.text =
@@ -101,4 +106,12 @@ class SleepNightDiffCallback : DiffUtil.ItemCallback<SleepNight>() {
         return oldItem == newItem
     }
 
+}
+
+/**
+ * onClick listener for the single item in the grid
+ * The listener class receives a SleepNight object and passes its nightId field
+ */
+class SleepNightListener(val clickListener: (sleepId: Long) -> Unit) {
+    fun onClick(night: SleepNight) = clickListener(night.nightId)
 }
