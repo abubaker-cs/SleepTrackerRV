@@ -20,7 +20,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -75,7 +74,7 @@ class SleepTrackerFragment : Fragment() {
 
         val adapter = SleepNightAdapter(SleepNightListener { nightId ->
             sleepTrackerViewModel.onSleepNightClicked(nightId)
-            Toast.makeText(context, "$nightId", Toast.LENGTH_LONG).show()
+            // Toast.makeText(context, "$nightId", Toast.LENGTH_LONG).show()
         })
 
 
@@ -89,7 +88,8 @@ class SleepTrackerFragment : Fragment() {
             // Only show this data until the RecyclerView is on the screen
             it?.let {
                 // adapter.data = it
-                adapter.submitList(it)
+                // adapter.submitList(it)
+                adapter.addHeaderAndSubmitList(it)
             }
 
         })
@@ -148,6 +148,13 @@ class SleepTrackerFragment : Fragment() {
 
         // Implementing GridLayout with 3 columns
         val manager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
+
+        manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int) = when (position) {
+                0 -> 3
+                else -> 1
+            }
+        }
 
         // Binding the new layout manager to our list.
         binding.sleepList.layoutManager = manager
