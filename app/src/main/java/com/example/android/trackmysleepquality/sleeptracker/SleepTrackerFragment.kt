@@ -80,7 +80,8 @@ class SleepTrackerFragment : Fragment() {
 
             // Only show this data until the RecyclerView is on the screen
             it?.let {
-                adapter.data = it
+                // adapter.data = it
+                adapter.submitList(it)
             }
 
         })
