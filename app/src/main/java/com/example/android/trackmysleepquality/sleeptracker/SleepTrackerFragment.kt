@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.database.SleepDatabase
 import com.example.android.trackmysleepquality.databinding.FragmentSleepTrackerBinding
@@ -45,7 +46,7 @@ class SleepTrackerFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         // Get a reference to the binding object and inflate the fragment views.
         val binding: FragmentSleepTrackerBinding = DataBindingUtil.inflate(
@@ -122,6 +123,12 @@ class SleepTrackerFragment : Fragment() {
         })
 
         binding.lifecycleOwner = this
+
+        // Implementing GridLayout with 3 columns
+        val manager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
+
+        // Binding the new layout manager to our list.
+        binding.sleepList.layoutManager = manager
 
         return binding.root
     }
